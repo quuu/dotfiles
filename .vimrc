@@ -1,3 +1,52 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+"Plugin 'valloric/youcompleteme'
+
+" let Vundle manage Vundle, required
+
+
+
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+
+Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+
+Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
 "       Amir Salihefendic
@@ -143,20 +192,24 @@ set foldcolumn=0
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
-syntax enable 
+" syntax enable 
 
+set background=light
 
-colorscheme southernlights
+colorscheme default
+" colorscheme challenger-deep
+" southernlights
 set colorcolumn=80
 set nu
 set relativenumber
 
+
 " Set extra options when running in GUI mode
-if has("gui_running")
-    set guioptions-=T
-    set guioptions-=e
-    set t_Co=256
-endif
+" if has("gui_running")
+"     set guioptions-=T
+"     set guioptions-=e
+"     set t_Co=256
+" endif
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -332,8 +385,27 @@ map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
+    
+"Markdown
+    autocmd Filetype markdown,rmd map <leader>w yiWi[<esc>Ea](<esc>pa)
+    autocmd Filetype markdown,rmd inoremap ;n ---<Enter><Enter>
+    autocmd Filetype markdown,rmd inoremap ;b ****<++><Esc>F*hi
+    autocmd Filetype markdown,rmd inoremap ;s ~~~~<++><Esc>F~hi
+    autocmd Filetype markdown,rmd inoremap ;e **<++><Esc>F*i
+    autocmd Filetype markdown,rmd inoremap ;h ====<Space><++><Esc>F=hi
+    autocmd Filetype markdown,rmd inoremap ;i ![](<++>)<++><Esc>F[a
+    autocmd Filetype markdown,rmd inoremap ;a [](<++>)<++><Esc>F[a
+    autocmd Filetype markdown,rmd inoremap ;1 #<Space><Enter><++><Esc>kA
+    autocmd Filetype markdown,rmd inoremap ;2 ##<Space><Enter><++><Esc>kA
+    autocmd Filetype markdown,rmd inoremap ;3 ###<Space><Enter><++><Esc>kA
+    autocmd Filetype markdown,rmd inoremap ;l --------<Enter>
+"    autocmd Filetype markdown map <F5> :!pandoc<space><C-r>%<space>--pdf-engine=xelatex<space>-o<space><C-r>%.pdf<Enter><Enter>
+    autocmd Filetype markdown,rmd map <F5> :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+    autocmd Filetype rmd inoremap ;r ```{r}<CR>```<CR><CR><esc>2kO
+    autocmd Filetype rmd inoremap ;p ```{python}<CR>```<CR><CR><esc>2kO
 
 
+    autocmd Filetype tex,latex map <leader>beg i<Enter><Enter><Enter>\begin{tcolorbox}<Enter><Enter><Enter><Enter><Enter><Enter><Enter>\end{tcolorbox}<esc>6k
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -390,9 +462,27 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 let g:tex_flavor='latex'
+
 call plug#begin('~/.vim/plugged')
 
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+Plug 'xuhdev/vim-latex-live-preview'
+", {'for': 'tex'}
+
+Plug 'crusoexia/vim-monokai'
+
 call plug#end()
+
 execute pathogen#infect()
 call pathogen#helptags()
+
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Powerline setup
+set laststatus=2
+set term=xterm-256color
+set termencoding=utf-8
+set guifont=Ubuntu\ Mono\ derivative\ Powerline:10
+" set guifont=Ubuntu\ Mono
+let g:Powerline_symbols = 'fancy'
+
+highlight Comment ctermfg=102
+
